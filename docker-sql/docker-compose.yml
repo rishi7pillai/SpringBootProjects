@@ -1,0 +1,23 @@
+version: '3'
+services:
+  mysql-docker-compose3:
+    image: 'mysql:5'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=compose
+    ports:
+      - "3305:3306"
+  springboot-event-container:
+    image: springboot-event-container
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-docker-compose3:3306/compose?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_PASSWORD: "root"
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql-docker-compose3
+
